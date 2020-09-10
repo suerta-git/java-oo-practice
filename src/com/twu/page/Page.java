@@ -20,4 +20,8 @@ public abstract class Page {
     protected String formatOutput(String output) {
         return "-----------------------------\n" + output;
     }
+
+    protected void formatPrintln(String output) {
+        System.out.println(formatOutput(output));
+    }
 }
