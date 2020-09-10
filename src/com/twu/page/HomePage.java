@@ -3,7 +3,7 @@ package com.twu.page;
 import java.util.Scanner;
 
 public class HomePage extends Page {
-    protected HomePage() {
+    public HomePage() {
         super("/home");
     }
 
