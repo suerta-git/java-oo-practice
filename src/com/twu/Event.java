@@ -34,6 +34,9 @@ public class Event implements Comparable<Event> {
         if (heat < o.getHeat()) {
             return 1;
         }
-        return -1;
+        if (heat > o.getHeat()) {
+            return -1;
+        }
+        return this.getDescribe().compareTo(o.getDescribe());
     }
 }
