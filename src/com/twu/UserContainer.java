@@ -10,12 +10,29 @@ public class UserContainer {
         return userMap.containsKey(userName);
     }
 
-    public User getUser(String userName) {
+    public NormalUser getNormalUser(String userName) {
         if (contains(userName)) {
-            return userMap.get(userName);
+            final User user = userMap.get(userName);
+            if (!(user instanceof AdminUser)) {
+                return (NormalUser) user;
+            }
         }
-        User newUser = new User(userName);
+        NormalUser newUser = new NormalUser(userName);
         userMap.put(userName, newUser);
         return newUser;
+    }
+
+    public AdminUser getAdminUser(String userName) {
+        if (contains(userName)) {
+            final User user = userMap.get(userName);
+            if (user instanceof AdminUser) {
+                return (AdminUser) user;
+            }
+        }
+        throw new IllegalArgumentException("this admin not exist");
+    }
+
+    public void registerUser(User user) {
+        userMap.put(user.getUserName(), user);
     }
 }
