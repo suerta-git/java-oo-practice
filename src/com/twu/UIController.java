@@ -11,12 +11,17 @@ public class UIController {
 
     private final Map<String, Page> pageMap = new HashMap<>();
 
+    public void registerPages(Page ...pages) {
+        for (Page page : pages) {
+            registerPage(page);
+        }
+    }
+
     public void registerPage(Page page){
         pageMap.put(page.getPath(), page);
     }
 
     public void run() {
-        Scanner scanner = new Scanner(System.in);
         try {
             //noinspection InfiniteLoopStatement
             while (true) {
