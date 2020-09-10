@@ -1,15 +1,26 @@
 package com.twu;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class EventRankingList {
     private final Set<Event> rankingList = new TreeSet<>();
+    private final Map<String, Event> eventMap = new HashMap<>();
+
+    public boolean contains(String describe) {
+        return eventMap.containsKey(describe.toUpperCase());
+    }
 
     public boolean contains(Event event) {
         return rankingList.contains(event);
+    }
+
+    public void add(String describe) {
+        if (contains(describe)) {
+            throw new IllegalArgumentException("event has existed");
+        }
+        Event newEvent = new Event(describe);
+        add(newEvent);
+        eventMap.put(describe.toUpperCase(), newEvent);
     }
 
     public void add(Event event) {
@@ -19,13 +30,26 @@ public class EventRankingList {
         rankingList.add(event);
     }
 
-    public List<Event> getAll() {
-        return new ArrayList<>(rankingList);
+    public Event get(String describe) {
+        if (!contains(describe)) {
+            throw new IllegalArgumentException("event not exist");
+        }
+        return eventMap.get(describe.toUpperCase());
+    }
+
+    public void voteEvent(String describe, int ballots) {
+        voteEvent(get(describe), ballots);
+    }
+
+    public void voteEvent(Event event, int ballots) {
+        rankingList.remove(event);
+        event.vote(ballots);
+        add(event);
     }
 
     public String showRank() {
         if (rankingList.isEmpty()) {
-            return "无热搜！";
+            return "无热搜！\n";
         }
         return "排名 描述 热度\n" + getRankingString();
     }
