@@ -1,9 +1,6 @@
 package com.twu.page;
 
-import com.twu.Event;
-import com.twu.EventRankingList;
-import com.twu.User;
-import com.twu.UserContainer;
+import com.twu.*;
 import com.twu.page.action.AddEvent;
 import com.twu.page.action.ShowRank;
 import com.twu.util.FormatPrintable;
@@ -14,7 +11,7 @@ public class UserPage extends Page implements ShowRank, AddEvent, FormatPrintabl
     private final UserContainer userContainer;
     private final EventRankingList eventRankingList;
     private final Scanner scanner = new Scanner(System.in);
-    private User user;
+    private NormalUser user;
 
     public UserPage(UserContainer userContainer, EventRankingList eventRankingList) {
         super("/home/user");
@@ -72,7 +69,7 @@ public class UserPage extends Page implements ShowRank, AddEvent, FormatPrintabl
         if (user == null) {
             formatPrint("请输入用户名：");
             String userName = scanner.nextLine().trim();
-            user = userContainer.getUser(userName);
+            user = userContainer.getNormalUser(userName);
             return userName;
         }
         return user.getUserName();
