@@ -16,12 +16,4 @@ public abstract class Page {
     public String getPath() {
         return path;
     }
-
-    protected String formatOutput(String output) {
-        return "-----------------------------\n" + output;
-    }
-
-    protected void formatPrintln(String output) {
-        System.out.println(formatOutput(output));
-    }
 }

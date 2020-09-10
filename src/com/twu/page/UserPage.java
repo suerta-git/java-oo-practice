@@ -4,10 +4,12 @@ import com.twu.Event;
 import com.twu.EventRankingList;
 import com.twu.User;
 import com.twu.UserContainer;
+import com.twu.page.action.AddEvent;
+import com.twu.util.FormatPrintable;
 
 import java.util.Scanner;
 
-public class UserPage extends Page {
+public class UserPage extends Page implements AddEvent, FormatPrintable {
     private final UserContainer userContainer;
     private final EventRankingList eventRankingList;
     private final Scanner scanner = new Scanner(System.in);
@@ -22,7 +24,7 @@ public class UserPage extends Page {
     @Override
     public String doAndGetNext() {
         String userName = getUser();
-        System.out.print(formatOutput(
+        formatPrint(
                 "欢迎 " + userName + "\n" +
                 "1. 查看热搜排行榜\n" +
                 "2. 给热搜事件投票\n" +
@@ -30,7 +32,7 @@ public class UserPage extends Page {
                 "4. 添加热搜\n" +
                 "5. 回到上一页\n" +
                 "0. 退出\n" +
-                "请输入选项代码：")
+                "请输入选项代码："
         );
 
         int code;
@@ -54,7 +56,7 @@ public class UserPage extends Page {
                 buyRank();
                 return getPath();
             case 4:
-                addEvent();
+                addEvent(eventRankingList);
                 return getPath();
             case 5:
                 user = null;
@@ -67,7 +69,7 @@ public class UserPage extends Page {
 
     private String getUser() {
         if (user == null) {
-            System.out.print(formatOutput("请输入用户名："));
+            formatPrint("请输入用户名：");
             String userName = scanner.nextLine().trim();
             user = userContainer.getUser(userName);
             return userName;
@@ -79,37 +81,26 @@ public class UserPage extends Page {
 
     }
 
-    private void addEvent() {
-        System.out.print(formatOutput("请输入热搜事件描述："));
-        String describe = scanner.nextLine().trim();
-        if (eventRankingList.contains(describe)) {
-            System.out.println("添加失败！事件已存在");
-            return;
-        }
-        eventRankingList.add(describe);
-        System.out.println("添加成功！");
-    }
-
     private void vote() {
         if (user.getBallots() <= 0) {
             formatPrintln("抱歉，您的投票次数已用完！");
             return;
         }
 
-        System.out.print(formatOutput("请输入热搜事件描述："));
+        formatPrint("请输入热搜事件描述：");
         Event event;
         while (true) {
             String describe = scanner.nextLine().trim();
             try {
                 event = eventRankingList.get(describe);
             } catch (IllegalArgumentException e) {
-                System.out.print(formatOutput("事件不存在，请重新输入："));
+                formatPrint("事件不存在，请重新输入：");
                 continue;
             }
             break;
         }
 
-        System.out.print(formatOutput(String.format("请输入投票数（当前您还有%d票）：", user.getBallots())));
+        formatPrint(String.format("请输入投票数（当前您还有%d票）：", user.getBallots()));
 
         int ballots;
 
@@ -117,12 +108,12 @@ public class UserPage extends Page {
             try {
                 ballots = Integer.parseInt(scanner.nextLine());
             } catch (Exception e) {
-                System.out.print(formatOutput("输入格式错误，应输入1-10之间的整数，请重新输入："));
+                formatPrint("输入格式错误，应输入1-10之间的整数，请重新输入：");
                 continue;
             }
 
             if (ballots <= 0 || ballots > 10) {
-                System.out.print(formatOutput("输入格式错误，应输入1-10之间的整数，请重新输入："));
+                formatPrint("输入格式错误，应输入1-10之间的整数，请重新输入：");
                 continue;
             }
             break;
@@ -139,6 +130,6 @@ public class UserPage extends Page {
     }
 
     private void showRank() {
-        System.out.print(formatOutput(eventRankingList.showRank()));
+        formatPrint(eventRankingList.showRank());
     }
 }
