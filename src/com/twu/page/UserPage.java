@@ -5,11 +5,12 @@ import com.twu.EventRankingList;
 import com.twu.User;
 import com.twu.UserContainer;
 import com.twu.page.action.AddEvent;
+import com.twu.page.action.ShowRank;
 import com.twu.util.FormatPrintable;
 
 import java.util.Scanner;
 
-public class UserPage extends Page implements AddEvent, FormatPrintable {
+public class UserPage extends Page implements ShowRank, AddEvent, FormatPrintable {
     private final UserContainer userContainer;
     private final EventRankingList eventRankingList;
     private final Scanner scanner = new Scanner(System.in);
@@ -47,7 +48,7 @@ public class UserPage extends Page implements AddEvent, FormatPrintable {
             case 0:
                 exitLoop();
             case 1:
-                showRank();
+                showRank(eventRankingList);
                 return getPath();
             case 2:
                 vote();
@@ -127,9 +128,5 @@ public class UserPage extends Page implements AddEvent, FormatPrintable {
         user.vote(ballots);
         eventRankingList.voteEvent(event, ballots);
         formatPrintln(String.format("投票成功！您的剩余票数为%d票", user.getBallots()));
-    }
-
-    private void showRank() {
-        formatPrint(eventRankingList.showRank());
     }
 }
