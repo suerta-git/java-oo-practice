@@ -76,7 +76,32 @@ public class UserPage extends Page implements ShowRank, AddEvent, FormatPrintabl
     }
 
     private void buyRank() {
+        formatPrint("请输入热搜事件描述：");
+        String describe = scanner.nextLine().trim();
+        System.out.print(String.format("请输入需要购买的排名（1-%d）：", eventRankingList.count()));
+        int rank;
+        try {
+            rank = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            formatPrintln("购买失败！输入格式错误");
+            return;
+        }
+        System.out.print("请输入购买价格：");
+        int price;
+        try {
+            price = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            formatPrintln("购买失败！输入格式错误");
+            return;
+        }
 
+        try {
+            eventRankingList.buyRank(describe, rank, price);
+        } catch (Exception e) {
+            formatPrintln("购买失败！" + e.getMessage());
+            return;
+        }
+        formatPrintln("购买成功！");
     }
 
     private void vote() {
