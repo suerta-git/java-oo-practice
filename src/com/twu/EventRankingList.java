@@ -30,6 +30,15 @@ public class EventRankingList {
         rankingList.add(event);
     }
 
+    public void addSuper(String describe) {
+        if (contains(describe)) {
+            throw new IllegalArgumentException("event has existed");
+        }
+        Event newEvent = new SuperEvent(describe);
+        add(newEvent);
+        eventMap.put(describe.toUpperCase(), newEvent);
+    }
+
     public Event get(String describe) {
         if (!contains(describe)) {
             throw new IllegalArgumentException("event not exist");

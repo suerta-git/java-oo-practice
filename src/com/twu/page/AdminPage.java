@@ -62,7 +62,7 @@ public class AdminPage extends Page implements ShowRank, AddEvent, FormatPrintab
                 addEvent(eventRankingList);
                 return getPath();
             case 3:
-
+                addSuperEvent();
                 return getPath();
             case 4:
                 user = null;
@@ -71,6 +71,18 @@ public class AdminPage extends Page implements ShowRank, AddEvent, FormatPrintab
 
         System.out.println("选项错误，请重新输入！");
         return getPath();
+    }
+
+    private void addSuperEvent() {
+        System.out.print(formatOutput("请输入热搜事件描述："));
+        Scanner scanner = new Scanner(System.in);
+        String describe = scanner.nextLine().trim();
+        if (eventRankingList.contains(describe)) {
+            System.out.println("添加失败！事件已存在");
+            return;
+        }
+        eventRankingList.addSuper(describe);
+        System.out.println("添加成功！");
     }
 
     private String getAdminUser() {

@@ -3,7 +3,7 @@ package com.twu;
 public class Event implements Comparable<Event> {
     private final String describe;
 
-    private int heat = 0;
+    protected int heat = 0;
 
 
     public Event(String describe) {
