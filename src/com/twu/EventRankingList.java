@@ -97,14 +97,29 @@ public class EventRankingList {
     private StringBuilder getRankingString() {
         StringBuilder result = new StringBuilder();
         int rank = 1;
-        for (Event event : rankingList) {
-            result.append(rank++)
-                    .append(" ")
-                    .append(event.getDescribe())
-                    .append(" ")
-                    .append(event.getHeat())
-                    .append("\n");
+        Iterator<Event> iterator = rankingList.iterator();
+        //noinspection WhileLoopReplaceableByForEach
+        while (iterator.hasNext()){
+            Event event;
+            if (paidRankingList.containsKey(rank)) {
+                event = paidRankingList.get(rank).getFirst();
+            } else {
+                event = iterator.next();
+            }
+            appendLine(result, event, rank++);
+        }
+        while (paidRankingList.containsKey(rank)) {
+            appendLine(result, paidRankingList.get(rank).getFirst(), rank++);
         }
         return result;
+    }
+
+    private void appendLine(StringBuilder result, Event event, int rank) {
+        result.append(rank)
+                .append(" ")
+                .append(event.getDescribe())
+                .append(" ")
+                .append(event.getHeat())
+                .append("\n");
     }
 }
